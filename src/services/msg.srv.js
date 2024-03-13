@@ -1,20 +1,7 @@
-const lark = require('@larksuiteoapi/node-sdk');
-const {Configuration, OpenAIApi} = require('openai');
+const {OpenAIApi} = require('openai');
 const logger = require('../config/logger');
 const config = require('../config/config');
-
-// 飞书请求客户端
-const larkClient = new lark.Client({
-    appId: config.lark.id,
-    appSecret: config.lark.secret,
-    disableTokenCache: false,
-})
-
-// openAI请求客户端
-const configuration = new Configuration({
-    // organization: config.openai.orgID,
-    apiKey: config.openai.key,
-})
+const { larkClient, configuration } = require('../util/client');
 
 const openAIClient = new OpenAIApi(configuration);
 
@@ -237,14 +224,21 @@ function _getPricingContent(title) {
 // ------------------------ OPENAI -------------------------
 // chat文档
 async function _genChat(description) {
-    const result = await openAIClient.createChatCompletion({
-        model: config.openai.model,
-        messages: [{
-            role: 'user',
-            content: description
-        }]
-    })
-    return [result.data.choices[0].message.content, result.data.usage.total_tokens];
+    try {
+
+        const result = await openAIClient.createChatCompletion({
+            model: config.openai.model,
+            messages: [{
+                role: 'user',
+                content: description
+            }]
+        });
+        // console.log(result, 'result')
+        return [result.data.choices[0].message.content, result.data.usage.total_tokens];
+    } catch (error) {
+        logger.error(`OpenAI API error: ${error}`);
+        throw error;
+    }
 }
 
 // TODO: image生成

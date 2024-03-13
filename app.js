@@ -6,9 +6,11 @@ const cors = require("cors");
 const httpStatus = require("http-status");
 const morgan = require("./src/config/morgan");
 const { errorConverter, errorHandler } = require("./src/middleware/error.mw");
+const { eventDispatcher } = require("./src/middleware/webhook.mw");
 const ApiError = require("./src/util/api-err");
 const routes = require("./src/routes");
 const db = require("./src/models");
+const bodyParser =  require('body-parser');
 
 const app = express();
 
@@ -32,7 +34,9 @@ app.use(compression());
 
 // 启用cors
 app.use(cors());
+app.use(bodyParser.json());
 app.options('*', cors());
+
 
 // 启动前，同步数据库
 db.sequelize.sync()
@@ -43,7 +47,7 @@ db.sequelize.sync()
     console.log("Failed to sync db: " + err.message);
   });
 
-
+app.use('/webhook/event', eventDispatcher);
 // 路由入口
 app.use('/', routes)
 

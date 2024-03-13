@@ -20,10 +20,12 @@ const envSchema = Joi.object()
     OPENAI_KEY: Joi.string().required(),
     OPENAI_MODEL: Joi.string().default('gpt-3.5-turbo-0301'),
     OPENAI_MAX_TOKENS: Joi.number().default(4096),
-    OPENAI_ORG_ID: Joi.string().required(),
+    OPENAI_ORG_ID: Joi.string().optional().allow(''),
     FEISHU_APP_NAME: Joi.string().required(),
     FEISHU_APP_ID: Joi.string().required(),
-    FEISHU_APP_SECRET: Joi.string().required()
+    FEISHU_APP_SECRET: Joi.string().required(),
+    FEISHU_APP_ENCRYPTKEY: Joi.string().required(),
+    FEISHU_APP_VERIFICATIONTOKEN: Joi.string().required(),
   })
   .unknown();
 
@@ -53,11 +55,14 @@ module.exports = {
         key: envVars.OPENAI_KEY,
         model: envVars.OPENAI_MODEL,
         maxTokens: envVars.OPENAI_MAX_TOKENS,
-        orgID: envVars.OPENAI_ORG_ID
+        orgID: envVars.OPENAI_ORG_ID,
+        basePath: envVars.OPENAI_BASEPATH,
     },
     lark: {
         name: envVars.FEISHU_APP_NAME,
         id: envVars.FEISHU_APP_ID,
-        secret: envVars.FEISHU_APP_SECRET
+        secret: envVars.FEISHU_APP_SECRET,
+        encryptKey: envVars.FEISHU_APP_ENCRYPTKEY,
+        verificationToken: envVars.FEISHU_APP_VERIFICATIONTOKEN,
     }
 };
