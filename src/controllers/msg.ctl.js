@@ -130,5 +130,19 @@ const asyncAnswer = catchAsync(async (req, res) => {
         return await reply(msgId, '抱歉，目前您只能通过文本消息的方式，向我提问。（🌍May Be Force With You🌍）')
     }
 })
+const answer = catchAsync(async (req, res, next) => {
+    const { question } = req.body; // 使用解构赋值从请求体中提取问题
 
-export { asyncAnswer };
+    if (!question) {
+        return res.status(400).json({ error: 'No question provided' });
+    }
+
+    try {
+        const [reply, tokensUsed] = await getAIAnswer(question);
+        res.status(200).json({ answer: reply, tokensUsed });
+    } catch (error) {
+        // 这里不再需要catch里面直接返回响应的做法，错误会被catchAsync捕获并传递给next，由错误处理中间件统一处理
+        next(error);
+    }
+});
+export { asyncAnswer, answer };

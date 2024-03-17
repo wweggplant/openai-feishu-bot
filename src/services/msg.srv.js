@@ -49,7 +49,7 @@ export async function getUserInfo(userId) {
 }
 
 // 通过 OpenAI API SDK 获取回复
-export async function getAIAnswer(question, type) {
+export async function getAIAnswer(question, type = 'text') {
     switch (type) {
         case 'text':
             return await _genChat(question);
