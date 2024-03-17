@@ -1,16 +1,6 @@
-/* 
-定义actions服务. 使用openai的库. 
-注意:
-const { larkClient, configuration } = require('../util/client');
-
-const openAIClient = new OpenAIApi(configuration); 从这里获取openai的client对象.
-
-1. 在某个飞书文档的多维表格中,插入一条新的记录.
-*/
-const { configuration } = require('../util/client');
-const config = require('../config/config');
-const {OpenAIApi} = require('openai');
-
+import { OpenAIApi } from 'openai';
+import config from '../config/config.js';
+import { configuration } from '../util/client.js';
 const openAIClient = new OpenAIApi(configuration);
 function insertRecord() {
   // Code for inserting a new record into a multi-dimensional table in a Lark document
@@ -18,11 +8,11 @@ function insertRecord() {
 // 使用function-call, 定义一个函数, 用于在飞书文档中插入一条新的记录.
 function getCurrentWeather(location, unit = "fahrenheit") {
   if (location.toLowerCase().includes("tokyo")) {
-    return JSON.stringify({ location: "Tokyo", temperature: "10", unit: "celsius" });
+    return JSON.stringify({ location: "Tokyo", temperature: "10", unit });
   } else if (location.toLowerCase().includes("san francisco")) {
-    return JSON.stringify({ location: "San Francisco", temperature: "72", unit: "fahrenheit" });
+    return JSON.stringify({ location: "San Francisco", temperature: "72", unit });
   } else if (location.toLowerCase().includes("paris")) {
-    return JSON.stringify({ location: "Paris", temperature: "22", unit: "fahrenheit" });
+    return JSON.stringify({ location: "Paris", temperature: "22", unit });
   } else {
     return JSON.stringify({ location, temperature: "unknown" });
   }
@@ -92,7 +82,4 @@ async function runConversation(content) {
   }
 }
 
-module.exports = {
-  insertRecord,
-  runConversation
-};
+export { insertRecord, runConversation };

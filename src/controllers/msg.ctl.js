@@ -6,9 +6,9 @@
 // @Description: 处理请求，并分析请求目的，交由不同的service处理
 // @Link: https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message/events/receive
 
-const catchAsync = require('../util/catch-async');
-const db = require('../models');
-const {reply, getAIAnswer, getUserInfo} = require('../services/msg.srv');
+import catchAsync from '../util/catch-async.js';
+import db from '../models/index.js';
+import { reply, getAIAnswer, getUserInfo } from '../services/msg.srv.js';
 const userDao = db.user;
 const questionDao = db.question;
 
@@ -131,6 +131,4 @@ const asyncAnswer = catchAsync(async (req, res) => {
     }
 })
 
-module.exports = {
-    asyncAnswer: asyncAnswer,
-}
+export { asyncAnswer };

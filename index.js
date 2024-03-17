@@ -1,6 +1,6 @@
-const app = require('./app');
-const config = require('./src/config/config');
-const logger = require('./src/config/logger');
+import app from './app.js';
+import config from './src/config/config.js';
+import logger from './src/config/logger.js';
 
 const server = app.listen(config.port, () => {
   logger.info(`Listening to port ${config.port}`);

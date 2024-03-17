@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "OpenAI加持下的飞书机器人",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon index.js",
     "start": "pm2 start pm2.config.json --no-daemon",

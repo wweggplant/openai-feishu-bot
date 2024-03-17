@@ -1,21 +1,21 @@
-const express = require("express");
-const helmet = require("helmet");
-const xss = require("xss-clean");
-const compression = require("compression");
-const cors = require("cors");
-const httpStatus = require("http-status");
-const morgan = require("./src/config/morgan");
-const { errorConverter, errorHandler } = require("./src/middleware/error.mw");
-const { eventDispatcher } = require("./src/middleware/webhook.mw");
-const ApiError = require("./src/util/api-err");
-const routes = require("./src/routes");
-const db = require("./src/models");
-const bodyParser =  require('body-parser');
+import express from 'express';
+import helmet from 'helmet';
+import xss from 'xss-clean';
+import compression from 'compression';
+import cors from 'cors';
+import httpStatus from 'http-status';
+import { successHandler as morganSuccessHandler, errorHandler as morganErrorHandler } from './src/config/morgan.js';
+import { errorConverter, errorHandler } from './src/middleware/error.mw.js';
+import { eventDispatcherAdapted } from './src/middleware/webhook.mw.js';
+import ApiError from './src/util/api-err.js';
+import routes from './src/routes/index.js';
+import db from './src/models/index.js';
+import bodyParser from 'body-parser';
 
 const app = express();
 
-app.use(morgan.successHandler);
-app.use(morgan.errorHandler);
+app.use(morganSuccessHandler);
+app.use(morganErrorHandler);
 
 // 设置安全性 HTTP 标头
 app.use(helmet());
@@ -44,12 +44,12 @@ db.sequelize.sync()
     console.log("Synced db.");
   })
   .catch((err) => {
-    console.log("Failed to sync db: " + err.message);
+    console.log(`Failed to sync db: ${err.message}`);
   });
 
-app.use('/webhook/event', eventDispatcher);
+app.use('/webhook/event', eventDispatcherAdapted);
 // 路由入口
-app.use('/', routes)
+app.use('/', routes);
 
 // 为任何未知 API 请求发回 404 错误
 app.use((req, res, next) => {
@@ -63,4 +63,4 @@ app.use(errorConverter);
 // 处理错误
 app.use(errorHandler);
 
-module.exports = app;
+export default app;

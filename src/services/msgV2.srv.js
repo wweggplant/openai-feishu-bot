@@ -6,9 +6,9 @@
 // @Description: 处理请求，并分析请求目的，交由不同的service处理
 // @Link: https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message/events/receive
 
-const db = require('../models');
-const {reply, getAIAnswer} = require('./msg.srv');
-const { runConversation } = require('./actions.srv');
+import db from '../models/index.js';
+import { reply, getAIAnswer } from './msg.srv.js';
+import { runConversation } from './actions.srv.js';
 const questionDao = db.question;
 
 const asyncAnswer = async (data) => {
@@ -70,6 +70,4 @@ const asyncAnswer = async (data) => {
     }
 }
 
-module.exports = {
-    asyncAnswer: asyncAnswer,
-}
+export { asyncAnswer };

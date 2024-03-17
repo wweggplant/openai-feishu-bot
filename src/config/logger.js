@@ -1,6 +1,8 @@
-const winston = require('winston');
-const config = require('./config');
+// 使用 import 语句替代 require
+import winston from 'winston';
+import config from './config.js';  // 注意：ESM 中需要指定文件扩展名
 
+// 保持 enumerateErrorFormat 函数不变
 const enumerateErrorFormat = winston.format((info) => {
   if (info instanceof Error) {
     Object.assign(info, { message: info.stack });
@@ -8,6 +10,7 @@ const enumerateErrorFormat = winston.format((info) => {
   return info;
 });
 
+// 创建 logger 的代码基本保持不变，但是导出方式有所不同
 const logger = winston.createLogger({
   level: config.env === 'development' ? 'debug' : 'info',
   format: winston.format.combine(
@@ -23,4 +26,4 @@ const logger = winston.createLogger({
   ],
 });
 
-module.exports = logger;
+export default logger;

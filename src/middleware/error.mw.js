@@ -1,7 +1,7 @@
-const httpStatus = require('http-status');
-const config = require('../config/config');
-const logger = require('../config/logger');
-const ApiError = require('../util/api-err');
+import httpStatus from 'http-status';
+import config from '../config/config.js';
+import logger from '../config/logger.js';
+import ApiError from '../util/api-err.js';
 
 const errorConverter = (err, req, res, next) => {
   let error = err;
@@ -14,7 +14,7 @@ const errorConverter = (err, req, res, next) => {
   next(error);
 };
 
-const errorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res) => {
   let { statusCode, message } = err;
   if (config.env === 'production' && !err.isOperational) {
     statusCode = httpStatus.INTERNAL_SERVER_ERROR;
@@ -36,7 +36,4 @@ const errorHandler = (err, req, res, next) => {
   res.status(statusCode).send(response);
 };
 
-module.exports = {
-  errorConverter,
-  errorHandler,
-};
+export { errorConverter, errorHandler };

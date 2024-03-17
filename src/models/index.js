@@ -1,6 +1,7 @@
-const config = require('../config/config.js');
-
-const Sequelize = require('sequelize');
+import Sequelize from 'sequelize';
+import config from '../config/config.js';
+import userModel from './user.model.js';
+import questionModel from './question.model.js';
 const sequelize = new Sequelize(config.db.name, config.db.user, config.db.passwd, {
   host: config.db.host,
   port: config.db.port,
@@ -25,7 +26,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.user = require('./user.model.js')(sequelize);
-db.question = require('./question.model.js')(sequelize);
+db.user = userModel(sequelize);
+db.question = questionModel(sequelize);
 
-module.exports = db;
+export default db;

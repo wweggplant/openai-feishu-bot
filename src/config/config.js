@@ -1,6 +1,12 @@
-const path = require('path');
-const dotenv = require('dotenv');
-const Joi = require('joi'); // 请求校验库
+import path from 'path';
+import { fileURLToPath } from 'url'; // 引入 url 模块的 fileURLToPath 方法
+import dotenv from 'dotenv';
+import Joi from 'joi';
+
+// 使用 fileURLToPath 和 import.meta.url 获取当前文件的绝对路径
+const __filename = fileURLToPath(import.meta.url);
+// 使用 path.dirname 获取当前文件所在的目录
+const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: path.join(__dirname, '../../.env') });
 
@@ -35,34 +41,34 @@ if (error) {
   throw new Error(`Config validation error: ${error.message}`);
 }
 
-module.exports = {
-    env: envVars.NODE_ENV,
-    port: envVars.PORT,
-    db: {
-        name: envVars.DB_NAME,
-        host: envVars.DB_HOST,
-        port: envVars.DB_PORT,
-        user: envVars.DB_USER,
-        passwd: envVars.DB_PASS,
-        pool: {
-            maxConn: envVars.DB_MAX_CONN,
-            minConn: envVars.DB_MIN_CONN,
-            acquire: envVars.DB_ACQUIRE,
-            idle: envVars.DB_IDLE
-      }
-    },
-    openai: {
-        key: envVars.OPENAI_KEY,
-        model: envVars.OPENAI_MODEL,
-        maxTokens: envVars.OPENAI_MAX_TOKENS,
-        orgID: envVars.OPENAI_ORG_ID,
-        basePath: envVars.OPENAI_BASEPATH,
-    },
-    lark: {
-        name: envVars.FEISHU_APP_NAME,
-        id: envVars.FEISHU_APP_ID,
-        secret: envVars.FEISHU_APP_SECRET,
-        encryptKey: envVars.FEISHU_APP_ENCRYPTKEY,
-        verificationToken: envVars.FEISHU_APP_VERIFICATIONTOKEN,
+export default {
+  env: envVars.NODE_ENV,
+  port: envVars.PORT,
+  db: {
+    name: envVars.DB_NAME,
+    host: envVars.DB_HOST,
+    port: envVars.DB_PORT,
+    user: envVars.DB_USER,
+    passwd: envVars.DB_PASS,
+    pool: {
+      maxConn: envVars.DB_MAX_CONN,
+      minConn: envVars.DB_MIN_CONN,
+      acquire: envVars.DB_ACQUIRE,
+      idle: envVars.DB_IDLE
     }
+  },
+  openai: {
+    key: envVars.OPENAI_KEY,
+    model: envVars.OPENAI_MODEL,
+    maxTokens: envVars.OPENAI_MAX_TOKENS,
+    orgID: envVars.OPENAI_ORG_ID,
+    basePath: envVars.OPENAI_BASEPATH,
+  },
+  lark: {
+    name: envVars.FEISHU_APP_NAME,
+    id: envVars.FEISHU_APP_ID,
+    secret: envVars.FEISHU_APP_SECRET,
+    encryptKey: envVars.FEISHU_APP_ENCRYPTKEY,
+    verificationToken: envVars.FEISHU_APP_VERIFICATIONTOKEN,
+  }
 };

@@ -5,7 +5,7 @@
 // @Last Modified Time: 17:22
 // @Description: 任何请求都需要检查讲求参数是否合法，这里定义了所有的参数校验规则
 
-const Joi = require('joi');
+import Joi from 'joi';
 
 const msgParam = {
     body: Joi.object().keys({
@@ -47,6 +47,4 @@ const msgParam = {
         .without('schema', ['type', 'challenge', 'token'])
 };
 
-module.exports = {
-    msgParam
-};
+export { msgParam };

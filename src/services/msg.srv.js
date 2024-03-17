@@ -1,15 +1,14 @@
-const {OpenAIApi} = require('openai');
-const logger = require('../config/logger');
-const config = require('../config/config');
-const { larkClient, configuration } = require('../util/client');
+import { OpenAIApi } from 'openai'
+import config from '../config/config.js';
+import logger from '../config/logger.js';
+import { larkClient, configuration } from '../util/client.js';
 
 const openAIClient = new OpenAIApi(configuration);
 
 // 飞书回复消息, 目前有两种类型，配额耗尽通知购买 / 正常消息内容markdown模式
-async function reply(type, messageId, title = '', msgContent = '') {
+export async function reply(type, messageId, title = '', msgContent = '') {
     try {
         if (type === 'zero-quota') {
-            const pricingContent = {};
             return await larkClient.im.message.reply({
                 path: {
                     message_id: messageId,
@@ -37,7 +36,7 @@ async function reply(type, messageId, title = '', msgContent = '') {
 }
 
 // 飞书查询用户信息
-async function getUserInfo(userId) {
+export async function getUserInfo(userId) {
     try {
         return await larkClient.contact.user.get({
             path: {
@@ -50,7 +49,7 @@ async function getUserInfo(userId) {
 }
 
 // 通过 OpenAI API SDK 获取回复
-async function getAIAnswer(question, type) {
+export async function getAIAnswer(question, type) {
     switch (type) {
         case 'text':
             return await _genChat(question);
@@ -121,7 +120,7 @@ function _getPricingContent(title) {
                 tag: 'div',
                 text: {
                     tag: 'lark_md',
-                    content: '**普通用户**\n\n免费，每天可以向我提 **<font color=\"green\"> 1 </font>** 个问题'
+                    content: '**普通用户**\n\n免费，每天可以向我提 **<font color=\\"green\\"> 1 </font>** 个问题'
                 },
                 extra: {
                     tag: 'img',
@@ -242,17 +241,11 @@ async function _genChat(description) {
 }
 
 // TODO: image生成
-async function _genImage(description) {
+async function _genImage() {
 }
 
 // TODO: image编辑
-async function _editImage(description) {
-}
-
-module.exports = {
-    reply: reply,
-    getAIAnswer: getAIAnswer,
-    getUserInfo: getUserInfo
+async function _editImage() {
 }
 
 

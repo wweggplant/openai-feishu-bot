@@ -1,6 +1,6 @@
-const lark = require('@larksuiteoapi/node-sdk');
-const {Configuration } = require('openai');
-const config = require('../config/config');
+import lark from '@larksuiteoapi/node-sdk';
+import { Configuration } from 'openai';
+import config from '../config/config.js';
 const larkClient = new lark.Client({
   appId: config.lark.id,
   appSecret: config.lark.secret,
@@ -14,7 +14,4 @@ const configuration = new Configuration({
 })
 
 
-module.exports = {
-  larkClient,
-  configuration
-};
+export { larkClient, configuration };

@@ -5,9 +5,9 @@
 // @Last Modified Time: 23:03
 // @Description: 记录消息事件ID，同一个事件，仅处理一次，并记录每个问题的内容与回答，以及回答所使用的tokens（tokens作为openai api消耗的一个计量单位）
 
-const { DataTypes } = require('sequelize')
+import { DataTypes } from 'sequelize';
 
-module.exports = (sequelize) => {
+export default  (sequelize) => {
   return sequelize.define('question', {
     id: {
       type: DataTypes.STRING(255),

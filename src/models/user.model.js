@@ -5,9 +5,9 @@
 // @Last Modified Time: 23:03
 // @Description: 用户每天凌晨，会重置免费额度，即free字段会在每天0点重置为1；total字段根据会员等级level来判断重置数量
 
-const { DataTypes } = require('sequelize')
+import { DataTypes } from 'sequelize';
 
-module.exports = (sequelize) => {
+export default (sequelize) => {
   return sequelize.define('user', {
     id: {
       type: DataTypes.STRING,
