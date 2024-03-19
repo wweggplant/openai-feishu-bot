@@ -1,7 +1,8 @@
 import { OpenAIApi } from 'openai'
 import config from '../config/config.js';
 import logger from '../config/logger.js';
-import { larkClient, configuration } from '../util/client.js';
+import { larkClient, configuration, chain } from '../util/client.js';
+import { HumanMessage } from "@langchain/core/messages";
 
 const openAIClient = new OpenAIApi(configuration);
 
@@ -224,16 +225,24 @@ function _getPricingContent(title) {
 // chat文档
 async function _genChat(description) {
     try {
-
-        const result = await openAIClient.createChatCompletion({
-            model: config.openai.model,
-            messages: [{
-                role: 'user',
-                content: description
-            }]
-        });
-        // console.log(result, 'result')
-        return [result.data.choices[0].message.content, result.data.usage.total_tokens];
+        const result = await chain.invoke({
+            messages: [
+              new HumanMessage(
+                description
+              ),
+            //   new AIMessage("J'adore la programmation."),
+            //   new HumanMessage("What did you just say?"),
+            ],
+          });
+        // const result = await openAIClient.createChatCompletion({
+        //     model: config.openai.model,
+        //     messages: [{
+        //         role: 'user',
+        //         content: description
+        //     }]
+        // });
+        console.log(result, 'result')
+        return [result.content, result.response_metadata.tokenUsage.totalTokens];
     } catch (error) {
         logger.error(`OpenAI API error: ${error}`);
         throw error;
