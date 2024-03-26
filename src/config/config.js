@@ -23,6 +23,7 @@ const envSchema = Joi.object()
     DB_MIN_CONN: Joi.number().default(0),
     DB_ACQUIRE: Joi.number().default(30000), // 30 sec
     DB_IDLE: Joi.number().default(10000), // 10sec
+    GEMINI_KEY: Joi.string().optional().allow(''),
     OPENAI_KEY: Joi.string().required(),
     OPENAI_MODEL: Joi.string().default('gpt-3.5-turbo-0301'),
     OPENAI_MAX_TOKENS: Joi.number().default(4096),
@@ -70,5 +71,8 @@ export default {
     secret: envVars.FEISHU_APP_SECRET,
     encryptKey: envVars.FEISHU_APP_ENCRYPTKEY,
     verificationToken: envVars.FEISHU_APP_VERIFICATIONTOKEN,
+  },
+  gemini: {
+    key: envVars.GEMINI_KEY,
   }
 };

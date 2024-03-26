@@ -1,7 +1,7 @@
 import express from 'express';
 import validate from '../middleware/validate.mw.js';
 import { msgParam } from '../schemas/index.js';
-import { asyncAnswer, answer } from '../controllers/msg.ctl.js'
+import { asyncAnswer, answer, genBranchName } from '../controllers/msg.ctl.js'
 import Joi from 'joi';
 const router = express.Router();
 
@@ -12,5 +12,11 @@ router.post('/answer', validate({
       question: Joi.string().required()
   })
 }), answer);
+
+router.post('/genBranchName', validate({
+  body: Joi.object({
+      desc: Joi.string().required()
+  })
+}), genBranchName);
 export default router;
 

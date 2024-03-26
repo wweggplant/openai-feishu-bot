@@ -242,9 +242,9 @@ async function _genChat(description) {
         //     }]
         // });
         console.log(result, 'result')
-        return [result.content, result.response_metadata.tokenUsage.totalTokens];
+        return [result.content, result.response_metadata?.tokenUsage?.totalTokens ?? 0];
     } catch (error) {
-        logger.error(`OpenAI API error: ${error}`);
+        logger.error(`API error: ${error}`);
         throw error;
     }
 }

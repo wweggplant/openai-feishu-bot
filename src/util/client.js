@@ -2,6 +2,7 @@ import lark from '@larksuiteoapi/node-sdk';
 import { Configuration } from 'openai';
 import config from '../config/config.js';
 import { ChatOpenAI } from "@langchain/openai";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import {
   ChatPromptTemplate,
   MessagesPlaceholder,
@@ -17,7 +18,11 @@ const configuration = new Configuration({
   basePath: config.openai.basePath,  
   apiKey: config.openai.key,
 })
-
+const model = new ChatGoogleGenerativeAI({
+  apiKey: config.gemini.key,
+  modelName: "gemini-pro",
+  maxOutputTokens: 2048,
+});
 const chat = new ChatOpenAI({
   configuration: {
     apiKey: config.openai.key,
@@ -34,5 +39,5 @@ const prompt = ChatPromptTemplate.fromMessages([
   ],
   new MessagesPlaceholder("messages"),
 ]);
-const chain = prompt.pipe(chat);
-export { larkClient, configuration, chain };
+const chain = prompt.pipe(model);
+export { larkClient, configuration, chain, model };

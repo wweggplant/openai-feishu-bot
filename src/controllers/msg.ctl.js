@@ -9,6 +9,7 @@
 import catchAsync from '../util/catch-async.js';
 import db from '../models/index.js';
 import { reply, getAIAnswer, getUserInfo } from '../services/msg.srv.js';
+import { genFrontEndBranchName } from '../services/task.srv.js';
 const userDao = db.user;
 const questionDao = db.question;
 
@@ -145,4 +146,19 @@ const answer = catchAsync(async (req, res, next) => {
         next(error);
     }
 });
-export { asyncAnswer, answer };
+const genBranchName = catchAsync(async (req, res, next) => {
+    const { desc } = req.body; // 使用解构赋值从请求体中提取问题
+
+    if (!desc) {
+        return res.status(400).json({ error: 'No question provided' });
+    }
+
+    try {
+        const [reply] = await genFrontEndBranchName(desc);
+        res.status(200).json({ answer: reply });
+    } catch (error) {
+        // 这里不再需要catch里面直接返回响应的做法，错误会被catchAsync捕获并传递给next，由错误处理中间件统一处理
+        next(error);
+    }
+});
+export { asyncAnswer, answer, genBranchName };
